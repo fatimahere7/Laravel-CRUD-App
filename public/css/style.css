@@ -1,0 +1,60 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Wrapper */
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header */
+#header {
+    flex: 0 0 10vh;
+    width: 100%;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+/* Footer */
+/* #footer {
+    flex: 0 0 10vh;
+    width: 100%;
+    color: white;
+    background-color: black;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+} */
+
+/* Main Content */
+#main {
+    flex: 1;
+    background-color: white;
+    text-align: center;
+    padding: 2rem; /* Added padding for better content spacing */
+    overflow-y: auto; /* Ensures content is scrollable if it exceeds the viewport height */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #header, #footer {
+        flex: 0 0 8vh; /* Adjust height for smaller screens */
+        font-size: 24px; /* Adjust font size */
+    }
+    #main {
+        padding: 1rem; /* Adjust padding for smaller screens */
+    }
+}
