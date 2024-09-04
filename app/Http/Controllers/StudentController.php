@@ -29,9 +29,17 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request ->all();
-        Student::create($input);
-        return redirect('student')->with('success', 'Student added successfully!');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'adress' => 'required|string|max:255',
+            'mobile' => 'required|digits_between:10,15',
+        ]);
+        
+        //    $input = $request ->all();
+        Student::create($request->all());
+
+        return redirect()->back()->with('success', 'Student created successfully!');
+       
     }
 
     /**

@@ -1,5 +1,6 @@
 @extends('students.layout')
 @section('content')
+
 <div class="container mt-5">
     <div class="container mt-5">
       
@@ -16,7 +17,8 @@
             </div>
             <br><br>
             <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <!-- Modal -->
+              <div class="modal fade @if($errors->any()) show @endif" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" @if($errors->any()) style="display: block;" @endif>
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -26,31 +28,44 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            Create New Student
-                           </div>
-                        <div class="modal-body">
-                          <form action="{{ url('student') }}" method="post"> 
-                           @csrf
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" >
-                                <br>
-                                <input type="text" class="form-control" id="adress" name="adress" placeholder="Address" >
-                                <br>
-                                <input type="number" class="form-control" id="mobile" name="mobile" placeholder="Mobile Number" >
-                                <br>
-                            </div>
-                          
+                            @if ($errors->any())
+                               <div class="alert alert-danger">
+                                  <ul>
+                                       @foreach ($errors->all() as $error)
+                                             <li>{{ $error }}</li>
+                                       @endforeach
+                                  </ul>
+                               </div>
+                            @endif
+                            <form action="{{ url('student') }}" method="post">
+                                @csrf
+                                <div class="form-group">
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Full Name" value="{{ old('name') }}">
+                                    @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <br>
+                                    <input type="text" class="form-control @error('adress') is-invalid @enderror" id="adress" name="adress" placeholder="Address" value="{{ old('adress') }}">
+                                    @error('adress')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <br>
+                                    <input type="number" class="form-control @error('mobile') is-invalid @enderror" id="mobile" name="mobile" placeholder="Mobile Number" value="{{ old('mobile') }}">
+                                    @error('mobile')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <br>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
                         </div>
-                        
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                    
-                        </div>
-                    </form>
                     </div>
                 </div>
             </div>
+           
             @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -162,5 +177,47 @@
         </div>
     </div>
 </div>
+<script>
+    function validateForm(event) {
+        var isValid = true;
+
+        // Get form elements
+        var name = document.getElementById('name').value.trim();
+        var address = document.getElementById('adress').value.trim();
+        var mobile = document.getElementById('mobile').value.trim();
+
+        // Reset any previous error messages
+        document.querySelectorAll('.is-invalid').forEach(function(el) {
+            el.classList.remove('is-invalid');
+        });
+
+        // Validate each field
+        if (name === "") {
+            alert("Full Name is required.");
+            document.getElementById('name').classList.add('is-invalid');
+            isValid = false;
+        }
+
+        if (address === "") {
+            alert("Address is required.");
+            document.getElementById('adress').classList.add('is-invalid');
+            isValid = false;
+        }
+
+        if (mobile === "") {
+            alert("Mobile Number is required.");
+            document.getElementById('mobile').classList.add('is-invalid');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if any field is invalid
+        }
+    }
+
+    // Attach the validation function to the form's submit event
+    document.querySelector('form').addEventListener('submit', validateForm);
+</script>
+
 @stop
 
