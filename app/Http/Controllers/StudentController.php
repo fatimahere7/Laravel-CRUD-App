@@ -65,10 +65,15 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'adress' => 'required|string|max:255',
+            'mobile' => 'required|digits_between:10,15',
+        ]);
         $student = Student::find($id); 
         $input = $request->all(); 
         $student->update($input);
-        return redirect('student')->with('flash_massege','updated successfully');
+        return redirect()->back()->with('success', 'Student updated successfully!');
     }
 
     /**

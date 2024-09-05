@@ -16,74 +16,69 @@
                 
             </div>
             <br><br>
-            <!-- Modal -->
-              <!-- Modal -->
-              <div class="modal fade @if($errors->any()) show @endif" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" @if($errors->any()) style="display: block;" @endif>
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel"><b>Add New Student</b></h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            @if ($errors->any())
+            
+            <!--Create Modal -->
+           <div class="modal fade @if($errors->any()) show @endif" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" @if($errors->any()) style="display: block;" @endif>
+               <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel"><b>Add New Student</b></h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                           </button>
+                       </div>
+                       <div class="modal-body">
+                           @if ($errors->any())
                                <div class="alert alert-danger">
-                                  <ul>
+                                   <ul>
                                        @foreach ($errors->all() as $error)
-                                             <li>{{ $error }}</li>
+                                           <li>{{ $error }}</li>
                                        @endforeach
-                                  </ul>
+                                   </ul>
                                </div>
-                            @endif
-                            <form action="{{ url('student') }}" method="post">
-                                @csrf
-                                <div class="form-group">
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Full Name" value="{{ old('name') }}">
-                                    @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <br>
-                                    <input type="text" class="form-control @error('adress') is-invalid @enderror" id="adress" name="adress" placeholder="Address" value="{{ old('adress') }}">
-                                    @error('adress')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <br>
-                                    <input type="number" class="form-control @error('mobile') is-invalid @enderror" id="mobile" name="mobile" placeholder="Mobile Number" value="{{ old('mobile') }}">
-                                    @error('mobile')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <br>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           
-            @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
-            <!-- Table -->
+                           @endif   
+                           <form action="{{ url('student') }}" method="post">
+                               @csrf
+                               <div class="form-group">
+                                   <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Full Name" value="{{ old('name') }}">
+                                   <p id="nam" style="text-align: left"></p>
+                                   @error('name')
+                                       <div class="invalid-feedback">{{ $message }}</div>
+                                   @enderror
+                                   <br>
+                                   <input type="text" class="form-control @error('adress') is-invalid @enderror" id="adress" name="adress" placeholder="Address" value="{{ old('adress') }}">
+                                   <p id="adr" style="text-align: left"></p>
+                                   @error('adress')
+                                       <div class="invalid-feedback">{{ $message }}</div>
+                                   @enderror
+                                   <br>
+                                   <input type="number" class="form-control @error('mobile') is-invalid @enderror" id="mobile" name="mobile" placeholder="Mobile Number" value="{{ old('mobile') }}">
+                                   <p id="num"  style="text-align: left"></p>
+                                   @error('mobile')
+                                       <div class="invalid-feedback">{{ $message }}</div>
+                                   @enderror
+                                   <br>
+                               </div>
+                               <div class="modal-footer">
+                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                   <button type="submit" class="btn btn-primary">Save</button>
+                               </div>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <!--End of Create Modal -->
+            <!-- Table View  -->
             <div class="table-responsive">
                 <table class="table table-bordered">
-                    <thead>
+                    <thead class="thead-dark">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">Mobile Number</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col"  style="text-align: center">#</th>
+                            <th scope="col" style="text-align: center">Name</th>
+                            <th scope="col" style="text-align: center">Address</th>
+                            <th scope="col" style="text-align: center">Mobile Number</th>
+                            <th scope="col" style="text-align: center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,6 +109,7 @@
                                     </form>
                                 </td>
                         </tr>
+                        <!-- Table View  -->
                         <!-- View Modal -->
                         <div class="modal fade" id="viewModal-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel-{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -136,48 +132,83 @@
                             </div>
                         </div>
                         <!-- End of View Modal -->
-                        
-                         <!-- Edit Modal -->
-                         <div class="modal fade" id="editModal-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel-{{ $item->id }}" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editModalLabel-{{ $item->id }}"><b>Edit Student</b></h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{ url('student/' . $item->id) }}" method="post">
-                                            @csrf
-                                            @method('PATCH')
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="name" name="name" value="{{ $item->name }}">
-                                                <br>
-                                                <input type="text" class="form-control" id="adress" name="adress" value="{{ $item->adress }}">
-                                                <br>
-                                                <input type="number" class="form-control" id="mobile" name="mobile" value="{{ $item->mobile }}">
-                                                <br>
-                                            </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" value="update">Update</button>
-                                    </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End of Edit Modal -->
-                        @endforeach
-                        
+
+                        <!-- Edit Modal -->
+                       @foreach ($students as $item)
+                       <div class="modal fade" id="editModal-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel-{{ $item->id }}" aria-hidden="true">
+                           <div class="modal-dialog" role="document">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                       <h5 class="modal-title" id="editModalLabel-{{ $item->id }}"><b>Edit Student</b></h5>
+                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                           <span aria-hidden="true">&times;</span>
+                                       </button>
+                                   </div>
+                                   <div class="modal-body">
+                                       @if ($errors->has('edit_' . $item->id))
+                                           <div class="alert alert-danger">
+                                               <ul>
+                                                   @foreach ($errors->all() as $error)
+                                                       <li>{{ $error }}</li>
+                                                   @endforeach
+                                               </ul>
+                                           </div>
+                                       @endif
+                                       <form action="{{ url('student/' . $item->id) }}" method="post" id="editModal-{{ $item->id }}">
+                                           @csrf
+                                           @method('PATCH')
+                                           <div class="form-group">
+                                               <input type="text" class="form-control @error('name') is-invalid @enderror" id="name-{{ $item->id }}" name="name" value="{{ old('name', $item->name) }}">
+                                               <p id="edit-nam-{{ $item->id }}"  style="text-align: left"></p>
+                                               @error('name')
+                                                   <div class="invalid-feedback">{{ $message }}</div>
+                                               @enderror
+                                               <br>
+                                               <input type="text" class="form-control @error('adress') is-invalid @enderror" id="adress-{{ $item->id }}" name="adress" value="{{ old('adress', $item->adress) }}">
+                                               <p id="edit-adr-{{ $item->id }}" style="text-align: left"></p>
+                                               @error('adress')
+                                                   <div class="invalid-feedback">{{ $message }}</div>
+                                               @enderror
+                                               <br>
+                                               <input type="number" class="form-control @error('mobile') is-invalid @enderror" id="mobile-{{ $item->id }}" name="mobile" value="{{ old('mobile', $item->mobile) }}">
+                                               <p id="edit-num-{{ $item->id }}"  style="text-align: left"></p>
+                                               @error('mobile')
+                                                   <div class="invalid-feedback">{{ $message }}</div>
+                                               @enderror
+                                               <br>
+                                           </div>
+                                           <div class="modal-footer">
+                                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                               <button type="submit" class="btn btn-primary">Update</button>
+                                           </div>
+                                       </form>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       @endforeach
+                       <!-- End of Edit Modal -->
+                      @endforeach    
                     </tbody>
                 </table>
+                <!-- End of Table View -->
             </div>
         </div>
     </div>
 </div>
 <script>
+    // Check if there are validation errors and keep the modal open
+    @if ($errors->any())
+        $(document).ready(function () {
+            // Open the appropriate modals if there are validation errors
+            @foreach ($students as $item)
+                @if ($errors->has('edit_' . $item->id))
+                    $('#editModal-{{ $item->id }}').modal('show');
+                @endif
+            @endforeach
+        });
+    @endif
+
     function validateForm(event) {
         var isValid = true;
 
@@ -186,38 +217,95 @@
         var address = document.getElementById('adress').value.trim();
         var mobile = document.getElementById('mobile').value.trim();
 
-        // Reset any previous error messages
-        document.querySelectorAll('.is-invalid').forEach(function(el) {
-            el.classList.remove('is-invalid');
-        });
+        // Reset previous error messages
+        document.getElementById('nam').innerText = ''; 
+        document.getElementById('adr').innerText = ''; 
+        document.getElementById('num').innerText = ''; 
+
+        document.getElementById('name').classList.remove('is-invalid'); 
+        document.getElementById('adress').classList.remove('is-invalid'); 
+        document.getElementById('mobile').classList.remove('is-invalid'); 
+
+        var msg;
 
         // Validate each field
         if (name === "") {
-            alert("Full Name is required.");
+            document.getElementById('nam').style.color="red";
+            msg = 'Full Name is required.';
+            document.getElementById('nam').innerText = msg;
             document.getElementById('name').classList.add('is-invalid');
             isValid = false;
         }
 
         if (address === "") {
-            alert("Address is required.");
+            document.getElementById('adr').style.color="red";
+            msg = 'Address is required.';
+            document.getElementById('adr').innerText = msg;
             document.getElementById('adress').classList.add('is-invalid');
             isValid = false;
         }
 
-        if (mobile === "") {
-            alert("Mobile Number is required.");
+        if (mobile === "" || mobile.length < 10 || mobile.length > 15) {
+            document.getElementById('num').style.color="red";
+            msg = 'Mobile Number must be between 10 and 15 digits.';
+            document.getElementById('num').innerText = msg;
             document.getElementById('mobile').classList.add('is-invalid');
             isValid = false;
         }
 
         if (!isValid) {
-            event.preventDefault(); // Prevent form submission if any field is invalid
+            event.preventDefault(); 
         }
     }
 
-    // Attach the validation function to the form's submit event
-    document.querySelector('form').addEventListener('submit', validateForm);
+    // Attach event listeners to the forms
+    document.querySelectorAll('#exampleModal form').forEach(form => {
+        form.addEventListener('submit', validateForm);
+    });
+
+    @foreach ($students as $item)
+        document.querySelector(`#editModal-{{ $item->id }} form`).addEventListener('submit', function(event) {
+            var isValid = true;
+            var name = document.getElementById('name-{{ $item->id }}').value.trim();
+            var address = document.getElementById('adress-{{ $item->id }}').value.trim();
+            var mobile = document.getElementById('mobile-{{ $item->id }}').value.trim();
+
+            // Reset previous error messages
+            document.getElementById('edit-nam-{{ $item->id }}').innerText = '';
+            document.getElementById('edit-adr-{{ $item->id }}').innerText = '';
+            document.getElementById('edit-num-{{ $item->id }}').innerText = '';
+            document.getElementById('name-{{ $item->id }}').classList.remove('is-invalid');
+            document.getElementById('adress-{{ $item->id }}').classList.remove('is-invalid');
+            document.getElementById('mobile-{{ $item->id }}').classList.remove('is-invalid');
+
+            if (name === "") {
+                document.getElementById('edit-nam-{{ $item->id }}').style.color="red";
+                document.getElementById('edit-nam-{{ $item->id }}').innerText = 'Full Name is required.';
+                document.getElementById('name-{{ $item->id }}').classList.add('is-invalid');
+                isValid = false;
+            }
+
+            if (address === "") {
+                document.getElementById('edit-adr-{{ $item->id }}').style.color="red";
+                document.getElementById('edit-adr-{{ $item->id }}').innerText = 'Address is required.';
+                document.getElementById('adress-{{ $item->id }}').classList.add('is-invalid');
+                isValid = false;
+            }
+
+            if (mobile === "" || mobile.length < 10 || mobile.length > 15) {
+                document.getElementById('edit-num-{{ $item->id }}').style.color="red";
+                document.getElementById('edit-num-{{ $item->id }}').innerText = 'Mobile Number must be between 10 and 15 digits.';
+                document.getElementById('mobile-{{ $item->id }}').classList.add('is-invalid');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    @endforeach
 </script>
+
 
 @stop
 
