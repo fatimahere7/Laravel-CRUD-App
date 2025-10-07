@@ -2,86 +2,99 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Student;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $students = Student::all();
-        return view('students.index')->with('students',$students);
+        return view('students.index')->with('students', $students);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        // return view('students.create');
+
+    
+
+    public function store(Request $request){
+    // Validate form data including image
+    $data=$request->validate([
+        'name' => 'required|max:20|min:5',
+        'adress' => 'required|max:255',
+        'mobile' => 'required|numeric|digits_between:10,15',
+        'email' => 'required|email',
+        'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('images', 'public');
+    } else {
+        $imagePath = null;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'adress' => 'required|string|max:255',
-            'mobile' => 'required|digits_between:10,15',
-        ]);
-        
-        //    $input = $request ->all();
-        Student::create($request->all());
+    $stu=Student::create([
+        'name' => $request->input('name'),
+        'adress' => $request->input('adress'),
+        'mobile' => $request->input('mobile'),
+        'email' => $request->input('email'),
+        'image' => $imagePath,
+    ]);
+    if($stu){
+        return redirect()->back()->with('success', 'Student added successfully.')->with('create', true);
+    // }else{
+    //     return redirect()->back()->withErrors(['ValidationError' => 'Invalid credentials']);
+    }
+   
+}
 
-        return redirect()->back()->with('success', 'Student created successfully!');
-       
+public function update(Request $request, $id)
+{
+    // Validate form data including image
+    $request->validate([
+        'name' => 'required|max:255',
+        'adress' => 'required|max:255',
+        'mobile' => 'required|numeric|digits_between:10,15',
+        'email' => 'required|email',
+        'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    $student = Student::find($id);
+
+    // Handle file upload
+    if ($request->hasFile('image')) {
+        // Delete old image if necessary
+        if ($student->image) {
+            Storage::disk('public')->delete($student->image);
+        }
+        $imagePath = $request->file('image')->store('images', 'public');
+    } else {
+        $imagePath = $student->image; // Keep the old image if none is uploaded
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
+    // Update student record
+    $student->update([
+        'name' => $request->input('name'),
+        'adress' => $request->input('adress'),
+        'mobile' => $request->input('mobile'),
+        'email' => $request->input('email'),
+        'image' => $imagePath,
+    ]);
+
+    return redirect()->back()->with('success', 'Student updated successfully.');
+}
+
+
+    public function destroy($id)
     {
         $student = Student::find($id);
-        return view('students.show')->with('students',$student);
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $student = Student::find($id);
-        return view('students.show')->with('students',$student);
-    }
+        if ($student->image) {
+            Storage::disk('public')->delete($student->image);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'adress' => 'required|string|max:255',
-            'mobile' => 'required|digits_between:10,15',
-        ]);
-        $student = Student::find($id); 
-        $input = $request->all(); 
-        $student->update($input);
-        return redirect()->back()->with('success', 'Student updated successfully!');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
         Student::destroy($id);
-        return redirect('student')->with('flash_massege','deleted successfully');
+
+        return redirect()->back()->with('flash_message', 'Deleted successfully');
     }
 }
